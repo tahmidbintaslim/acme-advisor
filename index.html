@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Acme Advisor</title>
+	<!-- jquery -->
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<style type="text/css">
+	    body {
+	    	background-color: #b0e0e6;
+	    } 
+
+		#quote {
+			text-align: center;
+			font-family: sans-serif;
+			font-size: 24px;
+			font-weight: 700;
+			width: 500px;
+			margin: auto;
+			margin-top: 250px;
+		}
+
+		#truth_btn {
+			text-align: center;
+			padding: 10px;
+			background-color: #ececec;
+			border-radius: 10px;
+			border-width: 1px solid #eeeeee;
+			cursor: pointer;
+			margin-left: 20px;
+		}
+
+		#more_truth {
+			display: none;
+			position: fixed;
+			bottom: 20px;
+            right: 20px;
+		}
+	</style>
+
+	<script type="text/javascript">
+
+    // creating the function that returns the quote
+    function apicall(){ 
+    var request = "http://api.acme.international/fortune";
+	var t0 = performance.now()/1000; // starts the timer.
+	var string = ""; // stores the quote
+	var exit = 0; // used for testing when the API call is abandoned 
+	alternative_quotes = [ // these are some of my favorite quotes. The var omitted to avoid scoping issues.
+		"There are only two kinds of languages: the ones people complain about and the ones nobody uses. - Bjarne Stroustrup",
+		"All Rhodes Scholars had a great future in their past. - Peter Thiel",
+		"When something is important enough, you do it even if the odds are not in your favor. - Elon Musk",
+		"Brilliant thinking is rare, but courage is in even shorter supply than genius - Peter Thiel",
+		"Legacy code often differs from its suggested alternative by actually working and scaling - Bjarne Stroustrup",
+		"Design is not just what it looks like and feels like. Design is how it works. - Steve Jobs"
+	];
+
+	timeVar =  setInterval(function () { // calls the API and check for response every 1 sec until a response is back              
+   
+			if ((performance.now()/1000 - t0) < 10) { // stop the API call when response returned or 10 seconds has passed 
+
+				$.ajax({
+						url: request,
+						headers: {	        // this is to revent cache related errors
+							'Cache-Control': 'no-cache'
+									},
+						error: function() { // returns this quote if server returns an error message
+							 if (exit==0) { // this is to check if the success message was not delivered first
+								 var radom_index = Math.floor(Math.random()*5); // picks a random quote
+								 string = alternative_quotes[radom_index];
+								 $("#quote").text(string);
+							 	 clearTimeout(timeVar);
+							 	 exit = 1;
+						 	 }	 	
+						}, 
+						success: function(data) {  // concatenate strings in the response
+								if (exit == 0) { // this is to check if the success message was not delivered first	
+									string = "";	 	
+									for (i=0; i < data.fortune.length; i++){ 
+										string += data.fortune[i] + " ";
+									}									
+									$("#quote").text(string);	
+									 clearTimeout(timeVar); 
+									 exit = 1;
+								}
+				        }
+					}); 
+
+			} else {
+				
+                 var radom_index = Math.floor(Math.random()*5);
+				 string = alternative_quotes[radom_index];
+				 $("#quote").text(string);
+				 clearTimeout(timeVar); 
+				 exit = 1;
+			}
+
+			
+	}, 1000); // 1000 milliseconds is the time interval between calls
+
+} // apicall() ends here
+
+    $( document ).ready(function() {
+		$("#truth_btn, #more_truth").bind("click", function() { // binding function to dom
+			$("#quote").html("<img src='images/loading-icon.gif'><br><p>The quote is on its way ... </p>");
+			 apicall();
+			 $("#more_truth").show();   
+
+		});
+	 });
+	
+	</script>
+</head>
+<body>
+<div id="container">
+	<section>
+		<div id="quote">
+		<h1>ACME <span id="truth_btn">TRUTH</span></h1>
+		</div>
+	</section>
+
+	<section> 
+		<a href="#" id="more_truth">More truth</a>
+	</section>
+</div> <!-- container ends -->
+</body>
+</html>
