@@ -1,0 +1,96 @@
+body {
+	background-color: #FFFFFF;
+
+} 
+
+#quote, .quote {
+  background-repeat: no-repeat;
+  background-size: cover;
+	text-align: center;
+  line-height: 200%;
+	font-family: sans-serif;
+	font-size: 36px;
+	font-weight: 700;
+	text-indent: justify;
+	width: 500px;
+  height: 500px;
+  max-height: 600px;
+  padding: 60px 40px;
+	margin: auto;
+	margin-top: 40px;
+	font-family: 'Indie Flower', cursive;
+}
+
+img {
+  margin-left: 300px;
+  margin-top: 40px;
+}
+
+#truth_btn {
+	text-align: center;
+	padding: 10px;
+	background-color: #ececec;
+	border-radius: 10px;
+	border-width: 1px solid #eeeeee;
+	cursor: pointer;
+	margin-left: 20px;
+}
+
+#more_truth {
+	display: none;
+	position: fixed;
+	bottom: 20px;
+  right: 20px;
+}
+
+
+@keyframes lds-eclipse {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes lds-eclipse {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.lds-eclipse {
+  position: relative;
+}
+.lds-eclipse div {
+  position: absolute;
+  -webkit-animation: lds-eclipse 1s linear infinite;
+  animation: lds-eclipse 1s linear infinite;
+  width: 160px;
+  height: 160px;
+  top: 40px;
+  left: 220px;
+  border-radius: 50%;
+  box-shadow: 0 4px 0 0 #337ab7;
+  -webkit-transform-origin: 80px 82px;
+  transform-origin: 80px 82px;
+}
+.lds-eclipse {
+  width: 200px !important;
+  height: 200px !important;
+  -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+  transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
