@@ -16,10 +16,6 @@ function renderQuote(el,text){
 	var fonts = ["'Arvo', serif","'Lobster', cursive",
 		"'Abril Fatface', cursive","'Cinzel', serif"];
 
-	// display spinner
-	$(el).html('<div class="lds-css"><div style="width:100%;height:100%" class="lds-eclipse"><div></div></div></div>');
-	$(".lds-eclipse div").css("box-shadow","0 4px 0 0" + color_spinner);
-
 	// display background image	
 	if (images[select_image] == "custom"){
 	// TODO: check why this won't render correctly	
@@ -37,15 +33,17 @@ function renderQuote(el,text){
 	// render quote to a jpeg image
 	$( el ).ready(function() { 
 		
-		html2canvas($(el)).then(function(canvas) {
-			$("#result").attr('crossOrigin', 'anonymous');
-	    	var imageData = canvas.toDataURL('image/jpeg', 1.0);
-	    	console.log("imageData", imageData);
-	    	$("#quote").hide("")
-	    	$("#result").attr("src",imageData);
-	    });
-    });
-   
+		html2canvas($(el), {
+			allowTaint: true,
+			letterRendering: true,
+        	onrendered: function(canvas) {
+        		var imageData = canvas.toDataURL('image/jpeg', 1.0);
+	    		$("#quote").hide("");
+	    		$("#result").show();
+	    		$("#result").attr("src",imageData);
+        	}
+        });
+     });
 } 
 
 // getQuote takes a dom element (el)
@@ -69,6 +67,12 @@ function getQuote(el){
 		"Legacy code often differs from its suggested alternative by actually working and scaling - Bjarne Stroustrup",
 		"Design is not just what it looks like and feels like. Design is how it works. - Steve Jobs"
 	];
+
+	// display spinner
+	$("#result").hide();
+	$("#quote").show();
+	$(el).html('<div class="lds-css"><div style="width:100%;height:100%" class="lds-eclipse"><div></div></div></div>');
+	$(".lds-eclipse div").css("box-shadow","0 4px 0 0 #7b1fa2");
 	
 	$.ajax({
 		url: request,
@@ -103,8 +107,8 @@ $( document ).ready(function() {
 	$("#more_truth").show();
 	$("#more_truth").bind("click", function() {
 		// empty content of DOM
-		$("#quote").html("");
-		getQuote($("#quote"));
+		var el = $("#quote");
+		getQuote(el);
 	});
 
 });
