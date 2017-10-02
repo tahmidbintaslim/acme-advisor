@@ -51,7 +51,7 @@ function renderQuote(el,text){
 function getQuote(el){
 
 	// API endpoint for getting a quote
-	var request = "http://api.acme.international/fortune";
+	var request = "https://api.acme.international/fortune";
 	// start the timer to track API response time
 	var t0 = Date.now()/1000; 
 	// variable to store the quote
